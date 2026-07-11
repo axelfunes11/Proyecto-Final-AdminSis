@@ -1,17 +1,17 @@
 import { Router } from 'express';
-import pool from '../config/db';
+import { sequelize } from '../config/db';
 
 const router = Router();
 
 router.get('/', async (req, res) => {
   try {
-    const result = await pool.query('SELECT NOW() AS fecha_servidor');
+    const [result]: any = await sequelize.query('SELECT NOW() AS fecha_servidor');
 
     res.json({
       status: 'OK',
       service: 'users-service',
       database: 'connected',
-      fecha_servidor: result.rows[0].fecha_servidor
+      fecha_servidor: result[0].fecha_servidor
     });
   } catch (error: any) {
     res.status(500).json({

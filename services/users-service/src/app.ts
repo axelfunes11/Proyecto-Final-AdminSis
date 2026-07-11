@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 
 import healthRoutes from './routes/health.routes';
+import authRoutes from './routes/auth.routes';
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 app.use('/api/users/health', healthRoutes);
+app.use('/api/users/auth', authRoutes);
 
 app.get('/', (req, res) => {
   res.json({
