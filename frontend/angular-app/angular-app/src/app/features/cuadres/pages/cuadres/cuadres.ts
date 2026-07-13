@@ -62,14 +62,20 @@ export class CuadresComponent implements OnInit {
     this.inventoryService.getCatalogos().subscribe({
       next: (res) => {
         this.metodosPago = res.metodos_pago || [];
-
-        this.cuadreDiarioForm.pagos_contados = this.metodosPago.map((m) => ({
-          id_metodo_pago: m.id_metodo_pago,
-          nombre: m.nombre,
-          monto_contado: 0
-        }));
+        this.inicializarPagosContados();
+      },
+      error: () => {
+        this.errorMessage = 'Error al cargar métodos de pago';
       }
     });
+  }
+
+  inicializarPagosContados(): void {
+    this.cuadreDiarioForm.pagos_contados = this.metodosPago.map((m) => ({
+      id_metodo_pago: m.id_metodo_pago,
+      nombre: m.nombre,
+      monto_contado: 0
+    }));
   }
 
   cargarCuadresDiarios(): void {
@@ -99,9 +105,12 @@ export class CuadresComponent implements OnInit {
   }
 
   calcularTotalContado(): number {
-    return this.cuadreDiarioForm.pagos_contados.reduce((total: number, pago: any) => {
-      return total + Number(pago.monto_contado || 0);
-    }, 0);
+    return this.cuadreDiarioForm.pagos_contados.reduce(
+      (total: number, pago: any) => {
+        return total + Number(pago.monto_contado || 0);
+      },
+      0
+    );
   }
 
   generarDiario(): void {
@@ -127,13 +136,30 @@ export class CuadresComponent implements OnInit {
       next: () => {
         this.successMessage = 'Cuadre diario generado correctamente';
         this.savingDiario = false;
+        this.limpiarCuadreDiario();
         this.cargarCuadresDiarios();
+        this.cargarCuadresMensuales();
       },
       error: (error) => {
-        this.errorMessage = error.error?.message || 'Error al generar cuadre diario';
+        this.errorMessage =
+          error.error?.message || 'Error al generar cuadre diario';
         this.savingDiario = false;
       }
     });
+  }
+
+  limpiarCuadreDiario(): void {
+    this.cuadreDiarioForm = {
+      fecha_cuadre: '',
+      total_contado: '',
+      observaciones: '',
+      usuario_externo_id: 1,
+      pagos_contados: this.metodosPago.map((m) => ({
+        id_metodo_pago: m.id_metodo_pago,
+        nombre: m.nombre,
+        monto_contado: 0
+      }))
+    };
   }
 
   generarMensual(): void {
@@ -155,7 +181,8 @@ export class CuadresComponent implements OnInit {
         this.cargarCuadresMensuales();
       },
       error: (error) => {
-        this.errorMessage = error.error?.message || 'Error al generar cuadre mensual';
+        this.errorMessage =
+          error.error?.message || 'Error al generar cuadre mensual';
         this.savingMensual = false;
       }
     });

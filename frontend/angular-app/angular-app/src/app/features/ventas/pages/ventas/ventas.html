@@ -15,38 +15,73 @@
   <section class="form-card">
     <div class="form-header">
       <h2>Nueva venta</h2>
-      <button type="button" class="add-btn" (click)="agregarDetalle()">+ Agregar producto</button>
+      <button type="button" class="add-btn" (click)="agregarDetalle()">
+        + Agregar producto
+      </button>
     </div>
 
     <div class="detalle-list">
       <article class="detalle-card" *ngFor="let detalle of detalles; let i = index">
         <div class="field product-field">
           <label>Producto</label>
-          <select
-            name="producto{{ i }}"
-            [(ngModel)]="detalle.id_producto"
-            (change)="seleccionarProducto(i)"
-          >
-            <option value="">Seleccionar producto</option>
-            <option *ngFor="let p of productos" [value]="p.id_producto">
-              {{ p.nombre }} - Q{{ p.precio_venta }}
-            </option>
-          </select>
+
+          <div class="product-search">
+            <input
+              type="text"
+              name="productoBusqueda{{ i }}"
+              [(ngModel)]="detalle.busqueda_producto"
+              (focus)="detalle.mostrar_sugerencias = true"
+              (input)="detalle.mostrar_sugerencias = true"
+              placeholder="Buscar por nombre, código, marca o categoría..."
+            />
+
+            <div class="suggestions" *ngIf="detalle.mostrar_sugerencias">
+              <button
+                type="button"
+                *ngFor="let p of filtrarProductosPorDetalle(i)"
+                (mousedown)="seleccionarProductoEnDetalle(i, p)"
+              >
+                <strong>{{ p.nombre }}</strong>
+                <span>
+                  {{ p.codigo_producto }} · {{ p.categoria?.nombre || 'Sin categoría' }} · Q{{ p.precio_venta }}
+                </span>
+              </button>
+
+              <div
+                class="no-results"
+                *ngIf="filtrarProductosPorDetalle(i).length === 0"
+              >
+                No se encontraron productos
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="field">
           <label>Cantidad</label>
-          <input type="number" name="cantidad{{ i }}" [(ngModel)]="detalle.cantidad" />
+          <input
+            type="number"
+            name="cantidad{{ i }}"
+            [(ngModel)]="detalle.cantidad"
+          />
         </div>
 
         <div class="field">
           <label>Precio</label>
-          <input type="number" name="precio{{ i }}" [(ngModel)]="detalle.precio_unitario" />
+          <input
+            type="number"
+            name="precio{{ i }}"
+            [(ngModel)]="detalle.precio_unitario"
+          />
         </div>
 
         <div class="field">
           <label>Descuento</label>
-          <input type="number" name="descuento{{ i }}" [(ngModel)]="detalle.descuento_linea" />
+          <input
+            type="number"
+            name="descuento{{ i }}"
+            [(ngModel)]="detalle.descuento_linea"
+          />
         </div>
 
         <button type="button" class="remove-btn" (click)="eliminarDetalle(i)">
@@ -102,7 +137,12 @@
       </div>
     </section>
 
-    <button class="save-btn" type="button" (click)="registrarVenta()" [disabled]="saving">
+    <button
+      class="save-btn"
+      type="button"
+      (click)="registrarVenta()"
+      [disabled]="saving"
+    >
       {{ saving ? 'Registrando...' : 'Registrar venta' }}
     </button>
   </section>
@@ -131,12 +171,17 @@
               <strong>{{ v.numero_venta }}</strong>
               <span>{{ v.fecha_venta | date:'short' }}</span>
             </td>
+
             <td>
               <span class="status">{{ v.estado_venta?.nombre }}</span>
             </td>
+
             <td>Q{{ v.total }}</td>
+
             <td>{{ v.detalles?.length || 0 }}</td>
+
             <td>{{ v.pagos?.[0]?.metodo_pago?.nombre || '—' }}</td>
+
             <td>
               <button
                 class="cancel-btn"
