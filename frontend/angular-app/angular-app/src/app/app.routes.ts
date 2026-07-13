@@ -46,6 +46,13 @@ export const routes: Routes = [
           )
       },
       {
+        path: 'cuadres',
+        loadComponent: () =>
+          import('./features/cuadres/pages/cuadres/cuadres').then(
+            (m) => m.CuadresComponent
+          )
+      },
+      {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full'

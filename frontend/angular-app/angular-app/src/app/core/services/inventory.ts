@@ -56,4 +56,19 @@ export class InventoryService {
   anularVenta(id: number, data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/ventas/${id}/anular`, data);
   }
+  getCuadresDiarios(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/cuadres/diario`);
+  }
+
+  generarCuadreDiario(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/cuadres/diario`, data);
+  }
+
+  getCuadresMensuales(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/cuadres/mensual`);
+  }
+
+  generarCuadreMensual(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/cuadres/mensual`, data);
+  }
 }

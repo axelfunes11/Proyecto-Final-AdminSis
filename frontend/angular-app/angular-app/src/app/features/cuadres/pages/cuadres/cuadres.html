@@ -1,0 +1,157 @@
+<div class="cuadres-page">
+  <section class="header-card">
+    <div>
+      <span class="pill">🧾 Cuadres</span>
+      <h1>Control diario y mensual</h1>
+      <p>Genera cierres de caja diarios y resúmenes mensuales de ventas.</p>
+    </div>
+  </section>
+
+  <section class="messages">
+    <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+    <div class="success" *ngIf="successMessage">{{ successMessage }}</div>
+  </section>
+
+  <section class="forms-grid">
+    <article class="form-card">
+      <h2>Cuadre diario</h2>
+      <p class="form-subtitle">Registra el dinero contado por método de pago.</p>
+
+      <form (ngSubmit)="generarDiario()">
+        <label>Fecha del cuadre</label>
+        <input
+          type="date"
+          name="fecha_cuadre"
+          [(ngModel)]="cuadreDiarioForm.fecha_cuadre"
+        />
+
+        <div class="payment-list">
+          <div class="payment-row" *ngFor="let pago of cuadreDiarioForm.pagos_contados; let i = index">
+            <label>{{ pago.nombre }}</label>
+            <input
+              type="number"
+              name="pago{{ i }}"
+              [(ngModel)]="pago.monto_contado"
+              placeholder="0.00"
+            />
+          </div>
+        </div>
+
+        <div class="total-box">
+          <span>Total contado</span>
+          <strong>Q{{ calcularTotalContado() | number:'1.2-2' }}</strong>
+        </div>
+
+        <label>Observaciones</label>
+        <input
+          name="observaciones"
+          [(ngModel)]="cuadreDiarioForm.observaciones"
+          placeholder="Cierre de caja del día"
+        />
+
+        <button type="submit" [disabled]="savingDiario">
+          {{ savingDiario ? 'Generando...' : 'Generar cuadre diario' }}
+        </button>
+      </form>
+    </article>
+
+    <article class="form-card">
+      <h2>Cuadre mensual</h2>
+      <p class="form-subtitle">Resume ventas, diferencias y productos vendidos.</p>
+
+      <form (ngSubmit)="generarMensual()">
+        <label>Año</label>
+        <input
+          type="number"
+          name="anio"
+          [(ngModel)]="cuadreMensualForm.anio"
+        />
+
+        <label>Mes</label>
+        <select name="mes" [(ngModel)]="cuadreMensualForm.mes">
+          <option *ngFor="let mes of meses" [value]="mes.value">
+            {{ mes.label }}
+          </option>
+        </select>
+
+        <button type="submit" [disabled]="savingMensual">
+          {{ savingMensual ? 'Generando...' : 'Generar cuadre mensual' }}
+        </button>
+      </form>
+    </article>
+  </section>
+
+  <section class="table-card">
+    <h2>Cuadres diarios</h2>
+
+    <div class="loading" *ngIf="loading">Cargando cuadres...</div>
+
+    <div class="table-responsive" *ngIf="!loading">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Sistema</th>
+            <th>Contado</th>
+            <th>Diferencia</th>
+            <th>Estado</th>
+            <th>Pagos</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let c of cuadresDiarios">
+            <td>{{ c.fecha_cuadre }}</td>
+            <td>Q{{ c.total_ventas_sistema }}</td>
+            <td>Q{{ c.total_contado }}</td>
+            <td>
+              <strong [class.negative]="c.diferencia < 0">
+                Q{{ c.diferencia }}
+              </strong>
+            </td>
+            <td><span class="status">{{ c.estado }}</span></td>
+            <td>{{ c.pagos?.length || 0 }}</td>
+          </tr>
+
+          <tr *ngIf="cuadresDiarios.length === 0">
+            <td colspan="6" class="empty">No hay cuadres diarios registrados.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="table-card">
+    <h2>Cuadres mensuales</h2>
+
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Periodo</th>
+            <th>Total ventas</th>
+            <th>Diferencias</th>
+            <th>Cantidad ventas</th>
+            <th>Productos vendidos</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let c of cuadresMensuales">
+            <td>{{ c.mes }}/{{ c.anio }}</td>
+            <td>Q{{ c.total_ventas }}</td>
+            <td>Q{{ c.total_diferencias }}</td>
+            <td>{{ c.cantidad_ventas }}</td>
+            <td>{{ c.cantidad_productos_vendidos }}</td>
+            <td><span class="status">{{ c.estado }}</span></td>
+          </tr>
+
+          <tr *ngIf="cuadresMensuales.length === 0">
+            <td colspan="6" class="empty">No hay cuadres mensuales registrados.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
