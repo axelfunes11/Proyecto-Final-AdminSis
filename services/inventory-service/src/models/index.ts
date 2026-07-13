@@ -11,6 +11,10 @@ import { Venta } from './venta.model';
 import { DetalleVenta } from './detalleVenta.model';
 import { MetodoPago } from './metodoPago.model';
 import { PagoVenta } from './pagoVenta.model';
+import { CuadreDiario } from './cuadreDiario.model';
+import { CuadreDiarioPago } from './cuadreDiarioPago.model';
+import { CuadreMensual } from './cuadreMensual.model';
+import { CuadreMensualDiario } from './cuadreMensualDiario.model';
 
 Categoria.hasMany(Producto, { foreignKey: 'id_categoria', as: 'productos' });
 Producto.belongsTo(Categoria, { foreignKey: 'id_categoria', as: 'categoria' });
@@ -48,6 +52,46 @@ PagoVenta.belongsTo(Venta, { foreignKey: 'id_venta', as: 'venta' });
 MetodoPago.hasMany(PagoVenta, { foreignKey: 'id_metodo_pago', as: 'pagos' });
 PagoVenta.belongsTo(MetodoPago, { foreignKey: 'id_metodo_pago', as: 'metodo_pago' });
 
+CuadreDiario.hasMany(CuadreDiarioPago, {
+  foreignKey: 'id_cuadre_diario',
+  as: 'pagos'
+});
+
+CuadreDiarioPago.belongsTo(CuadreDiario, {
+  foreignKey: 'id_cuadre_diario',
+  as: 'cuadre_diario'
+});
+
+MetodoPago.hasMany(CuadreDiarioPago, {
+  foreignKey: 'id_metodo_pago',
+  as: 'cuadres_diarios_pagos'
+});
+
+CuadreDiarioPago.belongsTo(MetodoPago, {
+  foreignKey: 'id_metodo_pago',
+  as: 'metodo_pago'
+});
+
+CuadreMensual.hasMany(CuadreMensualDiario, {
+  foreignKey: 'id_cuadre_mensual',
+  as: 'dias'
+});
+
+CuadreMensualDiario.belongsTo(CuadreMensual, {
+  foreignKey: 'id_cuadre_mensual',
+  as: 'cuadre_mensual'
+});
+
+CuadreDiario.hasMany(CuadreMensualDiario, {
+  foreignKey: 'id_cuadre_diario',
+  as: 'cuadres_mensuales'
+});
+
+CuadreMensualDiario.belongsTo(CuadreDiario, {
+  foreignKey: 'id_cuadre_diario',
+  as: 'cuadre_diario'
+});
+
 export {
   Categoria,
   Marca,
@@ -61,5 +105,9 @@ export {
   Venta,
   DetalleVenta,
   MetodoPago,
-  PagoVenta
+  PagoVenta,
+  CuadreDiario,
+  CuadreDiarioPago,
+  CuadreMensual,
+  CuadreMensualDiario
 };
