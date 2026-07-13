@@ -1,0 +1,145 @@
+.dashboard {
+  display: grid;
+  gap: 22px;
+}
+
+.hero-card,
+.stat-card,
+.glass-card {
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+}
+
+.hero-card {
+  min-height: 210px;
+  padding: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background:
+    radial-gradient(circle at right, rgba(249, 115, 22, 0.24), transparent 34%),
+    linear-gradient(135deg, rgba(22, 163, 74, 0.16), rgba(255, 255, 255, 0.8));
+}
+
+.pill {
+  display: inline-flex;
+  padding: 9px 14px;
+  border-radius: 999px;
+  color: #166534;
+  font-weight: 900;
+  background: #dcfce7;
+}
+
+h1 {
+  margin: 16px 0 8px;
+  font-size: 2.5rem;
+}
+
+p {
+  color: #64748b;
+}
+
+.hero-icon {
+  width: 110px;
+  height: 110px;
+  display: grid;
+  place-items: center;
+  border-radius: 32px;
+  font-size: 3rem;
+  background: linear-gradient(135deg, #dcfce7, #fed7aa);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.stat-card {
+  padding: 24px;
+}
+
+.stat-card span {
+  font-weight: 900;
+  color: #334155;
+}
+
+.stat-card strong {
+  display: block;
+  margin: 14px 0 6px;
+  font-size: 2.1rem;
+}
+
+.green strong { color: #16a34a; }
+.orange strong { color: #f97316; }
+.blue strong { color: #0284c7; }
+.purple strong { color: #7c3aed; }
+
+.grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 18px;
+}
+
+.glass-card {
+  padding: 24px;
+}
+
+.bars {
+  height: 180px;
+  display: flex;
+  align-items: end;
+  gap: 14px;
+  padding-top: 24px;
+}
+
+.bars span {
+  flex: 1;
+  border-radius: 999px 999px 8px 8px;
+  background: linear-gradient(180deg, #22c55e, #f97316);
+}
+
+.glass-card button {
+  width: 100%;
+  margin-top: 12px;
+  padding: 13px;
+  border: 0;
+  border-radius: 16px;
+  cursor: pointer;
+  font-weight: 800;
+  background: #dcfce7;
+  color: #14532d;
+}
+
+@media (max-width: 1000px) {
+  .stats,
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .wide {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 620px) {
+  .stats,
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-card {
+    padding: 24px;
+  }
+
+  .hero-icon {
+    display: none;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+}

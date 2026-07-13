@@ -1,0 +1,49 @@
+<section class="login-page">
+  <div class="orb orb-green"></div>
+  <div class="orb orb-orange"></div>
+
+  <article class="login-card">
+    <div class="brand">
+      <div class="brand-icon">N+</div>
+      <div>
+        <h1>NutriConPlus</h1>
+        <p>Inventario inteligente</p>
+      </div>
+    </div>
+
+    <h2>Bienvenido</h2>
+    <p class="subtitle">Inicia sesión para administrar productos, stock y ventas.</p>
+
+    <form (ngSubmit)="login()">
+      <label>Correo electrónico</label>
+      <div class="input-box">
+        <span>✉️</span>
+        <input
+          type="email"
+          name="correo"
+          [(ngModel)]="correo"
+          placeholder="axel@test.com"
+        />
+      </div>
+
+      <label>Contraseña</label>
+      <div class="input-box">
+        <span>🔒</span>
+        <input
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          placeholder="••••••••"
+        />
+      </div>
+
+      <div class="error" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" [disabled]="loading">
+        {{ loading ? 'Ingresando...' : 'Ingresar al panel' }}
+      </button>
+    </form>
+  </article>
+</section>

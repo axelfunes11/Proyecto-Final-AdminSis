@@ -1,0 +1,46 @@
+<div class="app-shell">
+  <aside class="sidebar" [class.open]="menuOpen">
+    <div class="logo">
+      <div class="logo-icon">N+</div>
+      <div>
+        <strong>NutriConPlus</strong>
+        <span>Inventario</span>
+      </div>
+    </div>
+
+    <nav>
+      <nav>
+        <a routerLink="/dashboard" (click)="closeMenu()"><span>📊</span> Dashboard</a>
+        <a routerLink="/productos" (click)="closeMenu()"><span>📦</span> Productos</a>
+        <a routerLink="/stock" (click)="closeMenu()"><span>🧮</span> Stock</a>
+        <a routerLink="/ventas" (click)="closeMenu()"><span>🛒</span> Ventas</a>
+        <a routerLink="/cuadres" (click)="closeMenu()"><span>🧾</span> Cuadres</a>
+      </nav>
+    </nav>
+
+    <button class="side-logout" (click)="logout()">⏻ Salir</button>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-btn" (click)="toggleMenu()">☰</button>
+
+      <div class="search">
+        <span>🔎</span>
+        <input placeholder="Buscar producto, venta o movimiento..." />
+      </div>
+
+      <div class="user-chip">
+        <div class="avatar">👤</div>
+        <div>
+          <strong>{{ user?.nombre_completo || 'Usuario' }}</strong>
+          <span>{{ user?.roles?.[0] || 'ADMIN' }}</span>
+        </div>
+      </div>
+    </header>
+
+    <section class="content">
+      <router-outlet></router-outlet>
+    </section>
+  </main>
+</div>
