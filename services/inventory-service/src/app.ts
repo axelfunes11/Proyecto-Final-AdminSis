@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import healthRoutes from './routes/health.routes';
 import productoRoutes from './routes/producto.routes';
 import catalogoRoutes from './routes/catalogo.routes';
+import inventarioRoutes from './routes/inventario.routes';
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use('/api/inventory/health', healthRoutes);
 app.use('/api/inventory/catalogos', catalogoRoutes);
 app.use('/api/inventory/productos', productoRoutes);
+app.use('/api/inventory/stock', inventarioRoutes);
 
 app.get('/', (req, res) => {
   res.json({
