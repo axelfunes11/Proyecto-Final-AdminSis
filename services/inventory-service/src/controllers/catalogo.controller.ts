@@ -3,7 +3,8 @@ import {
   Categoria,
   Marca,
   UnidadMedida,
-  Proveedor
+  Proveedor,
+  MetodoPago
 } from '../models';
 
 export const getCatalogos = async (req: Request, res: Response) => {
@@ -24,12 +25,17 @@ export const getCatalogos = async (req: Request, res: Response) => {
       where: { estado: 'ACTIVO' }
     });
 
+    const metodos_pago = await MetodoPago.findAll({
+      where: { estado: 'ACTIVO' }
+    });
+
     res.json({
       message: 'Catálogos obtenidos correctamente',
       categorias,
       marcas,
       unidades_medida,
-      proveedores
+      proveedores,
+      metodos_pago
     });
   } catch (error: any) {
     res.status(500).json({

@@ -1,0 +1,160 @@
+.stock-page {
+  display: grid;
+  gap: 22px;
+}
+
+.header-card,
+.form-card,
+.table-card {
+  border-radius: 30px;
+  padding: 26px;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+}
+
+.header-card {
+  background:
+    radial-gradient(circle at right, rgba(249, 115, 22, 0.22), transparent 34%),
+    linear-gradient(135deg, rgba(22, 163, 74, 0.16), rgba(255, 255, 255, 0.82));
+}
+
+.pill {
+  display: inline-flex;
+  padding: 9px 14px;
+  border-radius: 999px;
+  color: #166534;
+  font-weight: 900;
+  background: #dcfce7;
+}
+
+h1,
+h2 {
+  margin: 12px 0 8px;
+}
+
+p {
+  margin: 0;
+  color: #64748b;
+}
+
+.forms-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+
+form {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+label {
+  font-weight: 800;
+  color: #334155;
+  font-size: 0.88rem;
+}
+
+input,
+select {
+  width: 100%;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 16px;
+  padding: 13px 14px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+input:focus,
+select:focus {
+  border-color: #22c55e;
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.12);
+}
+
+button {
+  margin-top: 8px;
+  border: 0;
+  border-radius: 16px;
+  padding: 13px;
+  color: white;
+  font-weight: 900;
+  cursor: pointer;
+  background: linear-gradient(135deg, #16a34a, #f97316);
+}
+
+.error,
+.success {
+  padding: 12px;
+  border-radius: 14px;
+  font-weight: 700;
+}
+
+.error {
+  color: #991b1b;
+  background: #fee2e2;
+}
+
+.success {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  min-width: 780px;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  color: #64748b;
+  font-size: 0.85rem;
+  padding: 14px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+td {
+  padding: 14px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+td strong {
+  display: block;
+}
+
+td span {
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.qty {
+  color: #16a34a;
+  font-size: 1.2rem;
+}
+
+.empty {
+  text-align: center;
+  color: #64748b;
+  padding: 24px;
+}
+
+@media (max-width: 900px) {
+  .forms-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .header-card,
+  .form-card,
+  .table-card {
+    padding: 20px;
+    border-radius: 24px;
+  }
+}

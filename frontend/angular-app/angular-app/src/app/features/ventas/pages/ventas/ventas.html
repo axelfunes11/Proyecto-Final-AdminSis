@@ -1,0 +1,158 @@
+<div class="ventas-page">
+  <section class="header-card">
+    <div>
+      <span class="pill">🛒 Ventas</span>
+      <h1>Registro de ventas</h1>
+      <p>Registra ventas, descuenta stock automáticamente y consulta ventas realizadas.</p>
+    </div>
+  </section>
+
+  <section class="messages">
+    <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+    <div class="success" *ngIf="successMessage">{{ successMessage }}</div>
+  </section>
+
+  <section class="form-card">
+    <div class="form-header">
+      <h2>Nueva venta</h2>
+      <button type="button" class="add-btn" (click)="agregarDetalle()">+ Agregar producto</button>
+    </div>
+
+    <div class="detalle-list">
+      <article class="detalle-card" *ngFor="let detalle of detalles; let i = index">
+        <div class="field product-field">
+          <label>Producto</label>
+          <select
+            name="producto{{ i }}"
+            [(ngModel)]="detalle.id_producto"
+            (change)="seleccionarProducto(i)"
+          >
+            <option value="">Seleccionar producto</option>
+            <option *ngFor="let p of productos" [value]="p.id_producto">
+              {{ p.nombre }} - Q{{ p.precio_venta }}
+            </option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Cantidad</label>
+          <input type="number" name="cantidad{{ i }}" [(ngModel)]="detalle.cantidad" />
+        </div>
+
+        <div class="field">
+          <label>Precio</label>
+          <input type="number" name="precio{{ i }}" [(ngModel)]="detalle.precio_unitario" />
+        </div>
+
+        <div class="field">
+          <label>Descuento</label>
+          <input type="number" name="descuento{{ i }}" [(ngModel)]="detalle.descuento_linea" />
+        </div>
+
+        <button type="button" class="remove-btn" (click)="eliminarDetalle(i)">
+          ✕
+        </button>
+      </article>
+    </div>
+
+    <div class="payment-grid">
+      <div class="field">
+        <label>Método de pago</label>
+        <select name="metodoPago" [(ngModel)]="metodoPagoId">
+          <option value="">Seleccionar</option>
+          <option *ngFor="let m of metodosPago" [value]="m.id_metodo_pago">
+            {{ m.nombre }}
+          </option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Referencia</label>
+        <input
+          name="referenciaPago"
+          [(ngModel)]="referenciaPago"
+          placeholder="Efectivo, transferencia, voucher..."
+        />
+      </div>
+
+      <div class="field full">
+        <label>Observaciones</label>
+        <input
+          name="observaciones"
+          [(ngModel)]="observaciones"
+          placeholder="Observaciones de la venta"
+        />
+      </div>
+    </div>
+
+    <section class="total-card">
+      <div>
+        <span>Subtotal</span>
+        <strong>Q{{ calcularSubtotal() | number:'1.2-2' }}</strong>
+      </div>
+
+      <div>
+        <span>Descuento</span>
+        <strong>Q{{ calcularDescuento() | number:'1.2-2' }}</strong>
+      </div>
+
+      <div class="grand-total">
+        <span>Total</span>
+        <strong>Q{{ calcularTotal() | number:'1.2-2' }}</strong>
+      </div>
+    </section>
+
+    <button class="save-btn" type="button" (click)="registrarVenta()" [disabled]="saving">
+      {{ saving ? 'Registrando...' : 'Registrar venta' }}
+    </button>
+  </section>
+
+  <section class="table-card">
+    <h2>Ventas registradas</h2>
+
+    <div class="loading" *ngIf="loading">Cargando ventas...</div>
+
+    <div class="table-responsive" *ngIf="!loading">
+      <table>
+        <thead>
+          <tr>
+            <th>No. venta</th>
+            <th>Estado</th>
+            <th>Total</th>
+            <th>Productos</th>
+            <th>Pago</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let v of ventas">
+            <td>
+              <strong>{{ v.numero_venta }}</strong>
+              <span>{{ v.fecha_venta | date:'short' }}</span>
+            </td>
+            <td>
+              <span class="status">{{ v.estado_venta?.nombre }}</span>
+            </td>
+            <td>Q{{ v.total }}</td>
+            <td>{{ v.detalles?.length || 0 }}</td>
+            <td>{{ v.pagos?.[0]?.metodo_pago?.nombre || '—' }}</td>
+            <td>
+              <button
+                class="cancel-btn"
+                (click)="anularVenta(v.id_venta)"
+                [disabled]="v.estado_venta?.nombre === 'ANULADA'"
+              >
+                Anular
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngIf="ventas.length === 0">
+            <td colspan="6" class="empty">No hay ventas registradas.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

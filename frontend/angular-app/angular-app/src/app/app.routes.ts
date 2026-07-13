@@ -25,6 +25,27 @@ export const routes: Routes = [
           )
       },
       {
+        path: 'productos',
+        loadComponent: () =>
+          import('./features/productos/pages/productos/productos').then(
+            (m) => m.ProductosComponent
+          )
+      },
+      {
+        path: 'stock',
+        loadComponent: () =>
+          import('./features/stock/pages/stock/stock').then(
+            (m) => m.StockComponent
+          )
+      },
+      {
+        path: 'ventas',
+        loadComponent: () =>
+          import('./features/ventas/pages/ventas/ventas').then(
+            (m) => m.VentasComponent
+          )
+      },
+      {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full'

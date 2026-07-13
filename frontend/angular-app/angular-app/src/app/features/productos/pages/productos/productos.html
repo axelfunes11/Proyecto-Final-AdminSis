@@ -1,0 +1,179 @@
+<div class="productos-page">
+  <section class="header-card">
+    <div>
+      <span class="pill">📦 Productos</span>
+      <h1>Gestión de productos</h1>
+      <p>Registra, edita y administra el catálogo de productos de NutriConPlus.</p>
+    </div>
+  </section>
+
+  <section class="form-card">
+    <h2>{{ editando ? 'Editar producto' : 'Nuevo producto' }}</h2>
+
+    <div class="messages">
+      <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+      <div class="success" *ngIf="successMessage">{{ successMessage }}</div>
+    </div>
+
+    <form (ngSubmit)="guardarProducto()">
+      <div class="form-grid">
+        <div class="field">
+          <label>Código SKU *</label>
+          <input
+            name="codigo_producto"
+            [(ngModel)]="productoForm.codigo_producto"
+            placeholder="PROD-001"
+          />
+        </div>
+
+        <div class="field">
+          <label>Nombre *</label>
+          <input
+            name="nombre"
+            [(ngModel)]="productoForm.nombre"
+            placeholder="Meow Mix 16 lb"
+          />
+        </div>
+
+        <div class="field">
+          <label>Categoría *</label>
+          <select name="id_categoria" [(ngModel)]="productoForm.id_categoria">
+            <option value="">Seleccionar</option>
+            <option *ngFor="let c of categorias" [value]="c.id_categoria">
+              {{ c.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Unidad *</label>
+          <select name="id_unidad_medida" [(ngModel)]="productoForm.id_unidad_medida">
+            <option value="">Seleccionar</option>
+            <option *ngFor="let u of unidades" [value]="u.id_unidad_medida">
+              {{ u.nombre }} / {{ u.abreviatura }}
+            </option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Marca</label>
+          <select name="id_marca" [(ngModel)]="productoForm.id_marca">
+            <option value="">Sin marca</option>
+            <option *ngFor="let m of marcas" [value]="m.id_marca">
+              {{ m.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Proveedor</label>
+          <select name="id_proveedor" [(ngModel)]="productoForm.id_proveedor">
+            <option value="">Sin proveedor</option>
+            <option *ngFor="let p of proveedores" [value]="p.id_proveedor">
+              {{ p.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Precio costo *</label>
+          <input
+            type="number"
+            name="precio_compra"
+            [(ngModel)]="productoForm.precio_compra"
+            placeholder="130"
+          />
+        </div>
+
+        <div class="field">
+          <label>Precio venta *</label>
+          <input
+            type="number"
+            name="precio_venta"
+            [(ngModel)]="productoForm.precio_venta"
+            placeholder="170"
+          />
+        </div>
+
+        <div class="field">
+          <label>Vencimiento</label>
+          <input
+            type="date"
+            name="fecha_vencimiento"
+            [(ngModel)]="productoForm.fecha_vencimiento"
+          />
+        </div>
+
+        <div class="field full">
+          <label>Descripción</label>
+          <textarea
+            name="descripcion"
+            [(ngModel)]="productoForm.descripcion"
+            placeholder="Descripción del producto"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="submit" [disabled]="saving">
+          {{ saving ? 'Guardando...' : editando ? 'Actualizar producto' : 'Guardar producto' }}
+        </button>
+
+        <button type="button" class="secondary" (click)="limpiarFormulario()" *ngIf="editando">
+          Cancelar edición
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <section class="table-card">
+    <div class="table-header">
+      <div>
+        <h2>Productos registrados</h2>
+        <p>{{ productos.length }} productos activos</p>
+      </div>
+    </div>
+
+    <div class="loading" *ngIf="loading">Cargando productos...</div>
+
+    <div class="table-responsive" *ngIf="!loading">
+      <table>
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Categoría</th>
+            <th>Marca</th>
+            <th>Costo</th>
+            <th>Venta</th>
+            <th>Vence</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let p of productos">
+            <td>
+              <strong>{{ p.nombre }}</strong>
+              <span>{{ p.codigo_producto }}</span>
+            </td>
+            <td>{{ p.categoria?.nombre || '—' }}</td>
+            <td>{{ p.marca?.nombre || '—' }}</td>
+            <td>Q{{ p.precio_compra }}</td>
+            <td>Q{{ p.precio_venta }}</td>
+            <td>{{ p.fecha_vencimiento || '—' }}</td>
+            <td class="row-actions">
+              <button class="edit" (click)="editarProducto(p)">Editar</button>
+              <button class="delete" (click)="desactivarProducto(p.id_producto)">
+                Desactivar
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngIf="productos.length === 0">
+            <td colspan="7" class="empty">No hay productos registrados.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
