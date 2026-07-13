@@ -4,6 +4,11 @@
       <span class="pill">✨ Panel NutriConPlus</span>
       <h1>Dashboard</h1>
       <p>Control visual de productos, stock, ventas y cuadres.</p>
+
+      <div class="hero-actions">
+        <button routerLink="/ventas">🛒 Registrar venta</button>
+        <button routerLink="/productos" class="secondary">📦 Nuevo producto</button>
+      </div>
     </div>
 
     <div class="hero-icon">🐾</div>
@@ -12,48 +17,76 @@
   <section class="stats">
     <article class="stat-card green">
       <span>📦 Productos</span>
-      <strong>—</strong>
+      <strong>{{ totalProductos }}</strong>
       <p>Catálogo activo</p>
     </article>
 
     <article class="stat-card orange">
       <span>🧮 Stock</span>
-      <strong>—</strong>
-      <p>Inventario disponible</p>
+      <strong>{{ totalStock }}</strong>
+      <p>Unidades disponibles</p>
     </article>
 
     <article class="stat-card blue">
       <span>🛒 Ventas</span>
-      <strong>—</strong>
+      <strong>{{ totalVentas }}</strong>
       <p>Ventas registradas</p>
     </article>
 
     <article class="stat-card purple">
       <span>🧾 Cuadres</span>
-      <strong>—</strong>
-      <p>Control financiero</p>
+      <strong>{{ totalCuadres }}</strong>
+      <p>Cuadres diarios</p>
     </article>
   </section>
 
   <section class="grid">
     <article class="glass-card wide">
-      <h3>Actividad mensual</h3>
-      <div class="bars">
-        <span style="height: 45%"></span>
-        <span style="height: 70%"></span>
-        <span style="height: 55%"></span>
-        <span style="height: 85%"></span>
-        <span style="height: 60%"></span>
-        <span style="height: 75%"></span>
-        <span style="height: 50%"></span>
+      <div class="card-title">
+        <div>
+          <h3>Ventas recientes</h3>
+          <p>Últimas operaciones registradas</p>
+        </div>
+        <button routerLink="/ventas">Ver ventas</button>
+      </div>
+
+      <div class="loading" *ngIf="loading">Cargando resumen...</div>
+
+      <div class="table-responsive" *ngIf="!loading">
+        <table>
+          <thead>
+            <tr>
+              <th>No. venta</th>
+              <th>Estado</th>
+              <th>Total</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let venta of ventasRecientes">
+              <td>{{ venta.numero_venta }}</td>
+              <td>
+                <span class="status">{{ venta.estado_venta?.nombre }}</span>
+              </td>
+              <td>Q{{ venta.total }}</td>
+              <td>{{ venta.fecha_venta | date:'short' }}</td>
+            </tr>
+
+            <tr *ngIf="ventasRecientes.length === 0">
+              <td colspan="4" class="empty">No hay ventas recientes.</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </article>
 
     <article class="glass-card">
       <h3>Accesos rápidos</h3>
-      <button routerLink="/productos">📦 Nuevo producto</button>
+      <button routerLink="/productos">📦 Productos</button>
+      <button routerLink="/stock">🧮 Stock</button>
       <button routerLink="/ventas">🛒 Registrar venta</button>
-      <button>Cuadre diario</button>
+      <button routerLink="/cuadres">🧾 Cuadres</button>
     </article>
   </section>
 </div>
